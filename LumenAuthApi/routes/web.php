@@ -5,13 +5,16 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
 $router->get('/users', function () {
     return response()->json(\App\User::all());
 });
+
 $router->group(['prefix' => 'auth'], function () use ($router) {
-    $router->post('register', 'AuthController@register');
-    $router->post('login', 'AuthController@login');
-    $router->post('logout', 'AuthController@logout');
-    $router->post('refresh', 'AuthController@refresh');
-    $router->get('me', 'AuthController@me');
+    // Change 'AuthController' to 'AuthenticationController' in all these lines
+    $router->post('register', 'AuthenticationController@register'); //
+    $router->post('login', 'AuthenticationController@login');       //
+    $router->post('logout', 'AuthenticationController@logout');     //
+    $router->post('refresh', 'AuthenticationController@refresh');   //
+    $router->get('me', 'AuthenticationController@me');              //
 });
