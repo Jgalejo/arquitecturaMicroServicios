@@ -97,6 +97,48 @@ jobs:
           DB_CONNECTION: sqlite
           DB_DATABASE: ":memory:"
 
+  #Job para el servicio de Authentication
+  auth-service:
+    name: Authentication Service
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5' 
+          extensions: mbstring, xml, sqlite3
+          coverage: xdebug
+
+      - name: Install Dependencies
+        run: |
+          cd LumenAuthApi
+          composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Copy .env
+        run: |
+          cd LumenAuthApi
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Create Database
+        run: |
+          cd LumenAuthApi
+          mkdir -p database
+          touch database/database.sqlite
+
+      - name: Generate JWT Secret
+        run: |
+          cd LumenAuthApi
+          # Genera la clave de aplicación y el secreto JWT necesarios para los tests
+          php -r "echo 'APP_KEY=' . md5(uniqid()) . PHP_EOL;" >> .env
+          php artisan jwt:secret --force
+
+      - name: Execute Tests
+        run: |
+          cd LumenAuthApi
+          vendor/bin/phpunit
+
   # Job para el Gateway
   gateway-service:
     name: Gateway Service
@@ -218,43 +260,4 @@ jobs:
           swagger-cli validate docs/api-gateway-openapi.yaml
         continue-on-error: true
 
-  #Job para el servicio de Authentication
-  auth-service-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.5' 
-          extensions: mbstring, xml, sqlite3
-          coverage: xdebug
-
-      - name: Install Dependencies
-        run: |
-          cd LumenAuthApi
-          composer install --prefer-dist --no-progress --no-suggest
-
-      - name: Copy .env
-        run: |
-          cd LumenAuthApi
-          php -r "file_exists('.env') || copy('.env.example', '.env');"
-
-      - name: Create Database
-        run: |
-          cd LumenAuthApi
-          mkdir -p database
-          touch database/database.sqlite
-
-      - name: Generate JWT Secret
-        run: |
-          cd LumenAuthApi
-          # Genera la clave de aplicación y el secreto JWT necesarios para los tests
-          php -r "echo 'APP_KEY=' . md5(uniqid()) . PHP_EOL;" >> .env
-          php artisan jwt:secret --force
-
-      - name: Execute Tests
-        run: |
-          cd LumenAuthApi
-          vendor/bin/phpunit
+  

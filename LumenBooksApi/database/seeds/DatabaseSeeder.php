@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders; // Opcional, dependiendo de tu config, pero recomendado.
+
 use App\Book;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(Book::class,150)->create();
+        
+        Book::factory()->count(150)->create();
     }
 }

@@ -5,7 +5,9 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
-
+$router->get('/users', function () {
+    return response()->json(\App\User::all());
+});
 $router->group(['prefix' => 'auth'], function () use ($router) {
     $router->post('register', 'AuthController@register');
     $router->post('login', 'AuthController@login');

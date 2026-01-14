@@ -21,7 +21,7 @@ class AuthService
 
     public function __construct()
     {
-        $this->baseUri = config('services.users.base_uri');
+        $this->baseUri = config('services.auth.base_uri');
         // Si necesitaras pasar algún secreto extra en headers, lo harías aquí
     }
 

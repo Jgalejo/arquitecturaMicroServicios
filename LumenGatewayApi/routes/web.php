@@ -35,8 +35,8 @@
     /**
      * Users routes
      */
-    $router->post('/users/login', 'AuthenticationController@login');
-    $router->post('/users', 'AuthenticationController@store');
+    $router->post('/auth/login', 'AuthenticationController@login');
+    $router->post('/auth/register', 'AuthenticationController@store');
     $router->group(['middleware' => 'auth:api'], function () use ($router) {
         $router->get('/users', 'AuthenticationController@index');
         $router->get('/users/{user}', 'AuthenticationController@show');

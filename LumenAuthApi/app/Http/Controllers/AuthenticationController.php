@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 
-class AuthController extends Controller
+class AuthenticationController extends Controller
 {
     /**
      * Constructor para aplicar middleware a métodos protegidos
@@ -35,6 +35,7 @@ class AuthController extends Controller
             $user->email = $request->input('email');
             // En Lumen, Hash::make se usa comúnmente, o app('hash')->make()
             $user->password = app('hash')->make($request->input('password'));
+            
             $user->save();
 
             return response()->json([
