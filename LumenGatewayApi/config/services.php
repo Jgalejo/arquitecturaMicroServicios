@@ -10,4 +10,9 @@ return [
         'base_uri' => env('BOOKS_SERVICE_BASE_URL'),
         'secret' => env('BOOKS_SERVICE_SECRET'),
     ],
+
+    'auth' => [
+        'base_uri' => env('AUTH_SERVICE_BASE_URL'),
+        'secret' => env('AUTH_SERVICE_SECRET'),
+    ],
 ];

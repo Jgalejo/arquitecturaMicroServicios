@@ -30,3 +30,14 @@
     $router->put('/books/{book}', 'BookController@update');
     $router->patch('/books/{book}', 'BookController@update');
     $router->delete('/books/{book}', 'BookController@destroy');
+
+
+    /**
+     * Users routes
+     */
+    $router->post('/users/login', 'AuthenticationController@login');
+    $router->post('/users', 'AuthenticationController@store');
+    $router->group(['middleware' => 'auth:api'], function () use ($router) {
+        $router->get('/users', 'AuthenticationController@index');
+        $router->get('/users/{user}', 'AuthenticationController@show');
+});
